@@ -6,8 +6,8 @@ void testApp::setup(){
   ofSetFrameRate(60);
   
   nCurveVertices = 10;
-  nBlobs = 50;
-  particle blob;
+  nBlobs = 40;
+  Blob blob;
 
   for (int b = 0; b < nBlobs; b++) {
     blobs.push_back(blob);
@@ -31,11 +31,11 @@ void testApp::update(){
 	
 	for (int i = 0; i < nBlobs; i++){
 		
-		blobs[i].addRepulsionForce(mouseX, mouseY, 200, 1.4);
+		blobs[i].addRepulsionForce(mouseX, mouseY, 200, 4);
+    blobs[i].addAttractionForce(blobs[i].originalPos.x, blobs[i].originalPos.y, ofGetHeight() + ofGetWidth(), 0.1);
 		
 		for (int j = 0; j < i; j++){
-			blobs[i].addRepulsionForce(blobs[j], 50, 0.4);
-			blobs[i].addAttractionForce(blobs[j], 500, 0.005);
+			blobs[i].addRepulsionForce(blobs[j], blobs[j].radius + blobs[i].radius, 4);
 		}
 		//for (int j = 0; j < i; j++){
     //			if (bRepel){
@@ -60,7 +60,7 @@ void testApp::update(){
 void testApp::draw(){
   ofSetColor(43, 219, 230, 150);
   for (int b = 0; b < nBlobs; b++) {
-    particle blob = blobs[b];
+    Blob blob = blobs[b];
     blob.draw();
   }
 }

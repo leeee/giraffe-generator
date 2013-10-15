@@ -1,27 +1,27 @@
-#include "particle.h"
+#include "Blob.h"
 #include "ofMain.h"
 
 //------------------------------------------------------------
-particle::particle(){
+Blob::Blob(){
 	setInitialCondition(0,0,0,0);
 	damping = 0.12f;
 }
 
 //------------------------------------------------------------
-void particle::resetForce(){
+void Blob::resetForce(){
     // we reset the forces every frame
     frc.set(0,0);
 }
 
 //------------------------------------------------------------
-void particle::addForce(float x, float y){
+void Blob::addForce(float x, float y){
     // add in a force in X and Y for this frame.
     frc.x = frc.x + x;
     frc.y = frc.y + y;
 }
 
 //------------------------------------------------------------
-void particle::addRepulsionForce(float x, float y, float radius, float scale){
+void Blob::addRepulsionForce(float x, float y, float radius, float scale){
     
 	// ----------- (1) make a vector of where this position is: 
 	
@@ -52,7 +52,7 @@ void particle::addRepulsionForce(float x, float y, float radius, float scale){
 }
 
 //------------------------------------------------------------
-void particle::addAttractionForce(float x, float y, float radius, float scale){
+void Blob::addAttractionForce(float x, float y, float radius, float scale){
     
 	// ----------- (1) make a vector of where this position is: 
 	
@@ -84,9 +84,9 @@ void particle::addAttractionForce(float x, float y, float radius, float scale){
 }
 
 //------------------------------------------------------------
-void particle::addRepulsionForce(particle &p, float radius, float scale){
+void Blob::addRepulsionForce(Blob &p, float radius, float scale){
 	
-	// ----------- (1) make a vector of where this particle p is: 
+	// ----------- (1) make a vector of where this Blob p is: 
 	ofVec2f posOfForce;
 	posOfForce.set(p.pos.x,p.pos.y);
 	
@@ -117,9 +117,9 @@ void particle::addRepulsionForce(particle &p, float radius, float scale){
 }
 
 //------------------------------------------------------------
-void particle::addAttractionForce(particle & p, float radius, float scale){
+void Blob::addAttractionForce(Blob & p, float radius, float scale){
 	
-	// ----------- (1) make a vector of where this particle p is: 
+	// ----------- (1) make a vector of where this Blob p is: 
 	ofVec2f posOfForce;
 	posOfForce.set(p.pos.x,p.pos.y);
 	
@@ -152,7 +152,7 @@ void particle::addAttractionForce(particle & p, float radius, float scale){
 
 
 //------------------------------------------------------------
-void particle::addDampingForce(){
+void Blob::addDampingForce(){
 	
 	// the usual way to write this is  vel *= 0.99
 	// basically, subtract some part of the velocity 
@@ -164,11 +164,12 @@ void particle::addDampingForce(){
 }
 
 //------------------------------------------------------------
-void particle::setInitialCondition(float px, float py, float vx, float vy){
-    pos.set(px,py);
+void Blob::setInitialCondition(float px, float py, float vx, float vy){
+  originalPos.set(px,py);
+  pos.set(px,py);
 	vel.set(vx,vy);
   radius = ofRandom(200);
-  float noiseCursor = ofRandom(10);
+  float noiseCursor = ofRandom(1);
   float noiseStep = ofRandom(1);
   nCurveVertices = 10;
   
@@ -182,13 +183,14 @@ void particle::setInitialCondition(float px, float py, float vx, float vy){
 }
 
 //------------------------------------------------------------
-void particle::update(){	
+void Blob::update(){	
 	vel = vel + frc;
 	pos = pos + vel;
+  bounceOffWalls();
 }
 
 //------------------------------------------------------------
-void particle::draw(){
+void Blob::draw(){
   ofPushMatrix();
   ofTranslate(pos.x, pos.y);
   //    if ( b==0) {
@@ -225,7 +227,7 @@ void particle::draw(){
 
 
 //------------------------------------------------------------
-void particle::bounceOffWalls(){
+void Blob::bounceOffWalls(){
 	
 	// sometimes it makes sense to damped, when we hit
 	bool bDampedOnCollision = true;

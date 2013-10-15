@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "particle.h"
+#include "Blob.h"
 
 class testApp : public ofBaseApp{
 
@@ -22,5 +22,5 @@ class testApp : public ofBaseApp{
 		
     int nCurveVertices;
     int nBlobs;
-    vector<particle> blobs;
+    vector<Blob> blobs;
 };
