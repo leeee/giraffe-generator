@@ -167,6 +167,18 @@ void particle::addDampingForce(){
 void particle::setInitialCondition(float px, float py, float vx, float vy){
     pos.set(px,py);
 	vel.set(vx,vy);
+  radius = ofRandom(200);
+  float noiseCursor = ofRandom(10);
+  float noiseStep = ofRandom(1);
+  nCurveVertices = 10;
+  
+  for (int i = 0; i < nCurveVertices; i++) {
+    float distance = ofNoise(noiseCursor) * radius;
+    float angle   = TWO_PI/10 * i;
+    vertices[i] = ofVec2f(distance * cos(angle), distance * sin(angle));
+    noiseCursor += noiseStep;
+  }
+
 }
 
 //------------------------------------------------------------
@@ -177,7 +189,38 @@ void particle::update(){
 
 //------------------------------------------------------------
 void particle::draw(){
-    ofCircle(pos.x, pos.y, 3);
+  ofPushMatrix();
+  ofTranslate(pos.x, pos.y);
+  //    if ( b==0) {
+  //    cout << blob.center.pos.x << " " << blob.center.pos.y << endl;
+  //    }
+  ofBeginShape();
+  
+  for (int i = 0; i < nCurveVertices; i++){
+    
+    
+    // sorry about all the if/states here, but to do catmull rom curves
+    // we need to duplicate the start and end points so the curve acutally
+    // goes through them.
+    
+    // for i == 0, we just call the vertex twice
+    // for i == nCurveVertices-1 (last point) we call vertex 0 twice
+    // otherwise just normal ofCurveVertex call
+    
+    if (i == 0){
+      ofCurveVertex(vertices[0].x, vertices[0].y); // we need to duplicate 0 for the curve to start at point 0
+      ofCurveVertex(vertices[0].x, vertices[0].y); // we need to duplicate 0 for the curve to start at point 0
+    } else if (i == nCurveVertices-1){
+      ofCurveVertex(vertices[i].x, vertices[i].y);
+      ofCurveVertex(vertices[0].x, vertices[0].y);	// to draw a curve from pt 6 to pt 0
+      ofCurveVertex(vertices[0].x, vertices[0].y);	// we duplicate the first point twice
+    } else {
+      ofCurveVertex(vertices[i].x, vertices[i].y);
+    }
+  }
+  
+  ofEndShape();
+  ofPopMatrix();
 }
 
 

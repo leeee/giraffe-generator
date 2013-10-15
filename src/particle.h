@@ -30,6 +30,10 @@ class particle
 	
 	
 		float damping;
+  
+    ofPoint vertices[10];
+    float radius;
+    int nCurveVertices;
 
     protected:
     private:

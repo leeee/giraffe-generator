@@ -3,12 +3,6 @@
 #include "ofMain.h"
 #include "particle.h"
 
-typedef struct {
-  ofVec2f vertices[10];
-  float radius;
-  float x, y;
-} Blob;
-
 class testApp : public ofBaseApp{
 
 	public:
@@ -28,5 +22,5 @@ class testApp : public ofBaseApp{
 		
     int nCurveVertices;
     int nBlobs;
-    vector<Blob> blobs;
+    vector<particle> blobs;
 };
