@@ -2,11 +2,11 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-  ofBackground(255);
+  ofBackgroundHex(0xFFEB0A);
   ofSetFrameRate(60);
   
   nCurveVertices = 10;
-  nBlobs = 40;
+  nBlobs = 30;
   Blob blob;
 
   for (int b = 0; b < nBlobs; b++) {
@@ -32,7 +32,7 @@ void testApp::update(){
 	for (int i = 0; i < nBlobs; i++){
 		
 		blobs[i].addRepulsionForce(mouseX, mouseY, 200, 4);
-    blobs[i].addAttractionForce(blobs[i].originalPos.x, blobs[i].originalPos.y, ofGetHeight() + ofGetWidth(), 0.1);
+//    blobs[i].addAttractionForce(blobs[i].originalPos.x, blobs[i].originalPos.y, ofGetHeight() + ofGetWidth(), 0.1);
 		
 		for (int j = 0; j < i; j++){
 			blobs[i].addRepulsionForce(blobs[j], blobs[j].radius + blobs[i].radius, 4);
@@ -58,7 +58,8 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-  ofSetColor(43, 219, 230, 150);
+//  ofSetColor(43, 219, 230, 150);
+  ofSetColor(113, 76, 19, 200);
   for (int b = 0; b < nBlobs; b++) {
     Blob blob = blobs[b];
     blob.draw();

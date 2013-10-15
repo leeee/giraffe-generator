@@ -168,7 +168,7 @@ void Blob::setInitialCondition(float px, float py, float vx, float vy){
   originalPos.set(px,py);
   pos.set(px,py);
 	vel.set(vx,vy);
-  radius = ofRandom(200);
+  radius = 200 - ofRandom(150);
   float noiseCursor = ofRandom(1);
   float noiseStep = ofRandom(1);
   nCurveVertices = 10;
