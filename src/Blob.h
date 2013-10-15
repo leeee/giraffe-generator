@@ -1,5 +1,5 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#ifndef BLOB_H
+#define BLOB_H
 
 #include "ofMain.h"
 
@@ -40,4 +40,4 @@ class Blob
     private:
 };
 
-#endif // PARTICLE_H
+#endif // BLOB_H
